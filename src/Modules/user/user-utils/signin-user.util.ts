@@ -45,5 +45,10 @@ export const signinUser = async ({
     type: 'refresh',
   });
 
+  await authService.saveRefreshToken({
+    token: refreshToken,
+    username: user.username,
+  });
+
   return { accessToken, refreshToken };
 };

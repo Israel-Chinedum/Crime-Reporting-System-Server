@@ -1,9 +1,11 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { crimeReportDTO } from './crime-report-DTO/crime-report-dto';
 import type { Request } from 'express';
+import { AuthGuard } from '../auth/authGuard';
 
 @Controller('report')
+@UseGuards(AuthGuard)
 export class ReportController {
   constructor(private readonly reportService: ReportService) {}
 

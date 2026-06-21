@@ -5,6 +5,7 @@ import { UserModule } from './Modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ReportModule } from './Modules/crime-report/report.module';
+import { AuthModule } from './Modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ReportModule } from './Modules/crime-report/report.module';
     // ====== FEATURES/MODULES ======
     UserModule,
     ReportModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

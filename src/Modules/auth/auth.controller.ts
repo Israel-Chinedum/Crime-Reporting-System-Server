@@ -1,4 +1,23 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Req, Res } from '@nestjs/common';
+import type { Request, Response } from 'express';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
-export class UserController {}
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
+  @Get()
+  async assignAccessToken(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const accessToken = await this.authService.assignAccessToken(req);
+
+    // ====== Send refresh token cookie ======
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
+  }
+}

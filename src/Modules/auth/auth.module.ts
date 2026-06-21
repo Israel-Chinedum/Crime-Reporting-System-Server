@@ -5,10 +5,12 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthGuard } from './authGuard';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Token } from './entity/token.entity';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Token]), JwtModule, ConfigModule],
   providers: [AuthService, AuthGuard],
   exports: [AuthService, AuthGuard, JwtModule],
+  controllers: [AuthController],
 })
 export class AuthModule {}
