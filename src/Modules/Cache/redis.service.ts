@@ -13,6 +13,11 @@ export class RedisService implements OnModuleInit {
       url: this.configService.get<string>('REDIS_URL'),
     });
 
+    this.client.on('error', (err) => {
+      console.log('ERROR: ', err);
+      console.log('An error occured while trying to connect to redis server!');
+    });
+
     try {
       await this.client.connect();
     } catch (error) {

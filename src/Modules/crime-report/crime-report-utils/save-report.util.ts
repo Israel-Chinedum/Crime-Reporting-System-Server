@@ -36,7 +36,7 @@ export const saveReport = async ({
     // ====== Save user report to database ======
     const userReport = reportRepo.create(updatedReport);
     await reportRepo.save(userReport);
-    return { message: 'Report saved!' };
+    return { reportId };
   } catch (error) {
     console.log('ERROR: ', error);
     throw new BadRequestException('Unable to save user report!');

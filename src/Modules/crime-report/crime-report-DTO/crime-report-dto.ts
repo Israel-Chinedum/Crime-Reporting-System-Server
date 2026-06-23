@@ -28,6 +28,11 @@ export class crimeReportDTO {
   date!: string;
 
   @IsNotEmpty()
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return value;
+  })
   @IsBoolean()
   evidence_provided!: boolean;
 }
