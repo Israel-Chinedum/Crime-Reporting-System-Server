@@ -16,6 +16,7 @@ export class ReportService {
     private readonly configService: ConfigService,
   ) {}
 
+  // ====== SAVE REPORT METHOD ======
   async saveReport({
     body,
     user,
@@ -40,4 +41,7 @@ export class ReportService {
 
     return { message: 'Report saved!' };
   }
+
+  // ====== GET REPORT METHOD ======
+  async getReports({}) {}
 }

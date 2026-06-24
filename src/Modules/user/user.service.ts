@@ -11,6 +11,8 @@ import { forgotPassword } from './user-utils/forgot-password.util';
 import { RedisService } from '../Cache/redis.service';
 import { updateUserPasswordDTO } from './user-DTO/update-user-password-dto';
 import { updateUserPassword } from './user-utils/update-user-password.util';
+import { updateUserProfile } from './user-utils/update-user-profile.util';
+import { Request } from 'express';
 
 @Injectable()
 export class UserService {
@@ -42,11 +44,23 @@ export class UserService {
     return await forgotPassword({ userRepo: this.userRepo, redis, payload });
   }
 
+  // ====== UPDATE USER PASSWORD ======
   async updateUserPassword(payload: updateUserPasswordDTO) {
     return await updateUserPassword({
       payload,
       redis: this.redisService.getClient(),
       userRepo: this.userRepo,
     });
+  }
+
+  // ====== UPDATE USER PROFILE ======
+  async updateUserProfile({
+    payload,
+    req,
+  }: {
+    payload: createUserDTO;
+    req: Request;
+  }) {
+    return await updateUserProfile({ userRepo: this.userRepo, payload, req });
   }
 }

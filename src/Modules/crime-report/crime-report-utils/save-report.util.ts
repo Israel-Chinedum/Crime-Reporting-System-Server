@@ -3,6 +3,7 @@ import { Report } from '../report.entity';
 import { crimeReportDTO } from '../crime-report-DTO/crime-report-dto';
 import { BadRequestException } from '@nestjs/common';
 import type { jwtPayload } from 'src/types/jwt-payload';
+import { verifyTimeFormat } from 'src/Utilities/verify-time-format.util';
 
 export const saveReport = async ({
   report,
@@ -16,8 +17,8 @@ export const saveReport = async ({
   // ====== Convert time value to uppercase ======
   report.time = report.time.toUpperCase();
 
-  const timeRegex = /^(0?[1-9]|1[0-2]):[0-5][0-9]\s(AM|PM)$/;
-  if (!timeRegex.test(report.time)) {
+  const timeFormat = verifyTimeFormat.isTimeFormat(report.time);
+  if (!timeFormat) {
     throw new BadRequestException('Time value is improper!');
   }
 
@@ -33,7 +34,7 @@ export const saveReport = async ({
     // ====== Attach reportId and username to report object ======
     const updatedReport = { reportId, reported_by: user.username, ...report };
 
-    // ====== Save user report to database ======
+    // ====== Save user report to database and return reportId ======
     const userReport = reportRepo.create(updatedReport);
     await reportRepo.save(userReport);
     return { reportId };
