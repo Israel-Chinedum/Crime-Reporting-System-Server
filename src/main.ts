@@ -15,7 +15,14 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: ['http://192.168.56.60:5173', 'http://localhost:5173'],
+    origin: [
+      'http://localhost:5173',
+      'http://192.168.56.60:5173',
+      'https://crime-reporting-system-k3lz.onrender.com',
+    ],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   });
 
   app.use(cookieParser());

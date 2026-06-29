@@ -38,6 +38,12 @@ export class Report {
   @Column()
   reported_by!: string;
 
+  @Column()
+  type!: string;
+
+  @Column()
+  status!: string;
+
   @CreateDateColumn()
   createdAt!: Date;
 

@@ -11,7 +11,8 @@ export class AuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const accessToken = await this.authService.assignAccessToken(req);
+    const { accessToken, access, role } =
+      await this.authService.assignAccessToken(req);
 
     // ====== Send refresh token cookie ======
     res.cookie('accessToken', accessToken, {
@@ -19,5 +20,7 @@ export class AuthController {
       secure: true,
       sameSite: 'strict',
     });
+
+    return { access, role };
   }
 }

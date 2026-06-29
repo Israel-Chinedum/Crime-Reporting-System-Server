@@ -1,5 +1,11 @@
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsIn,
+  isNotEmpty,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
 
 export class crimeReportDTO {
   @IsNotEmpty()
@@ -35,4 +41,14 @@ export class crimeReportDTO {
   })
   @IsBoolean()
   evidence_provided!: boolean;
+
+  @IsNotEmpty()
+  @IsString()
+  @IsIn(['normal', 'emergency'])
+  type!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @IsIn(['active', 'resolved'])
+  status!: string;
 }

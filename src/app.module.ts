@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ReportModule } from './Modules/crime-report/report.module';
 import { AuthModule } from './Modules/auth/auth.module';
+import { AlertModule } from './Modules/alert/alert.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AuthModule } from './Modules/auth/auth.module';
     UserModule,
     ReportModule,
     AuthModule,
+    AlertModule,
   ],
   controllers: [AppController],
   providers: [AppService],

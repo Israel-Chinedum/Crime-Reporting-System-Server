@@ -1,7 +1,10 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('alerts')
 export class Alert {
+  @PrimaryGeneratedColumn()
+  'S/N': number;
+
   @Column()
   title!: string;
 

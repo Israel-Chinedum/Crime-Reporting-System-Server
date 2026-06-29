@@ -47,5 +47,5 @@ export const createUser = async ({
   await userRepo.save(user);
 
   // ====== Return user data without password ======
-  return userData;
+  return { message: 'Registration successfull!' };
 };

@@ -33,6 +33,7 @@ export const signinUser = async ({
     user: {
       username: user.username,
       userId: user.id,
+      role: user.role,
     },
     type: 'access',
   });
@@ -41,6 +42,7 @@ export const signinUser = async ({
     user: {
       username: user.username,
       userId: user.id,
+      role: user.role,
     },
     type: 'refresh',
   });
@@ -50,5 +52,5 @@ export const signinUser = async ({
     username: user.username,
   });
 
-  return { accessToken, refreshToken };
+  return { accessToken, refreshToken, role: user.role, access: 'granted' };
 };

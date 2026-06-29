@@ -8,6 +8,7 @@ import type { jwtPayload } from 'src/types/jwt-payload';
 import { ConfigService } from '@nestjs/config';
 import { createClient } from '@supabase/supabase-js';
 import { saveEvidence } from './crime-report-utils/save-evidence.util';
+import { generateReportId } from 'src/Utilities/generate-report-id';
 
 @Injectable()
 export class ReportService {
@@ -26,18 +27,28 @@ export class ReportService {
     user: jwtPayload;
     file: Express.Multer.File;
   }) {
-    const { reportId } = await saveReport({
+    // ====== Get report id ======
+    let reportCount: number = await this.reportRepo.count();
+    const reportId = generateReportId(reportCount);
+
+    // ====== Make sure evidence provided is initially set to false ======
+    body.evidence_provided = false;
+
+    if (file) {
+      const supabase = createClient(
+        this.configService.get<string>('SUPABASE_URL')!,
+        this.configService.get<string>('SUPABASE_SERVICE_ROLE_KEY')!,
+      );
+      await saveEvidence({ file, supabase, reportId });
+      body.evidence_provided = true;
+    }
+
+    await saveReport({
       report: body,
       reportRepo: this.reportRepo,
       user,
+      reportId,
     });
-
-    const supabase = createClient(
-      this.configService.get<string>('SUPABASE_URL')!,
-      this.configService.get<string>('SUPABASE_SERVICE_ROLE_KEY')!,
-    );
-
-    await saveEvidence({ file, supabase, reportId });
 
     return { message: 'Report saved!' };
   }

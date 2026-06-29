@@ -23,7 +23,7 @@ export class UserController {
     @Body() body: signinUserDTO,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { accessToken, refreshToken } =
+    const { accessToken, refreshToken, access, role } =
       await this.userService.signinUser(body);
 
     // ====== Send refresh token cookie ======
@@ -39,6 +39,8 @@ export class UserController {
       secure: true,
       sameSite: 'strict',
     });
+
+    return { access, role };
   }
 
   // ====== FORGOT PASSWORD ROUTE: To send otp for forgotten password ======

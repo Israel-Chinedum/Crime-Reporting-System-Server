@@ -9,10 +9,12 @@ export const saveReport = async ({
   report,
   reportRepo,
   user,
+  reportId,
 }: {
   report: crimeReportDTO;
   reportRepo: Repository<Report>;
   user: jwtPayload;
+  reportId: string;
 }) => {
   // ====== Convert time value to uppercase ======
   report.time = report.time.toUpperCase();
@@ -23,14 +25,6 @@ export const saveReport = async ({
   }
 
   try {
-    // ====== Generate and pass in reportId ======
-    const dateString = new Date().toISOString().split('T')[0];
-    let reportCount: string | number = await reportRepo.count();
-    reportCount =
-      reportCount < 10 ? `0${reportCount + 1}` : `${reportCount + 1}`;
-
-    const reportId = `CR-${dateString}-${reportCount}`;
-
     // ====== Attach reportId and username to report object ======
     const updatedReport = { reportId, reported_by: user.username, ...report };
 

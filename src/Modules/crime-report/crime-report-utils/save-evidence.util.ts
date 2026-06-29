@@ -1,5 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { Repository } from 'typeorm';
+import { Report } from '../report.entity';
 
 export const saveEvidence = async ({
   file,
@@ -18,4 +20,6 @@ export const saveEvidence = async ({
     console.log('ERROR: ', error);
     throw new BadRequestException('Unable to save report!');
   }
+
+  return reportId;
 };
