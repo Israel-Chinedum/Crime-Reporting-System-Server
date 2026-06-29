@@ -8,22 +8,21 @@ import { ReportModule } from './Modules/crime-report/report.module';
 import { AuthModule } from './Modules/auth/auth.module';
 import { AlertModule } from './Modules/alert/alert.module';
 
+console.log('ENV URL', process.env.DATABASE_URL);
+
 @Module({
   imports: [
-    // ====== DB CONNECTION ======
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'crime_reporting_system',
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
-
     // ====== ENV CONFIGURATION ======
     ConfigModule.forRoot({ isGlobal: true }),
+
+    // ====== DB CONNECTION ======
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+      autoLoadEntities: true,
+      synchronize: true,
+      ssl: { rejectUnauthorized: false },
+    }),
 
     // ====== FEATURES/MODULES ======
     UserModule,
