@@ -30,7 +30,7 @@ export class UserController {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: true,
-      sameSite: 'lax',
+      sameSite: 'none',
       domain: '.onrender.com',
     });
 
@@ -38,7 +38,7 @@ export class UserController {
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       secure: true,
-      sameSite: 'lax',
+      sameSite: 'none',
       domain: '.onrender.com',
     });
 
