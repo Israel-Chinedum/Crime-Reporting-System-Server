@@ -18,7 +18,8 @@ export class AuthController {
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: 'lax',
+      domain: '.onrender.com',
     });
 
     return { access, role };

@@ -13,6 +13,7 @@ import type { jwtPayload } from 'src/types/jwt-payload';
 import type { Request } from 'express';
 import { generateToken } from './auth-utils/generate-token.util';
 import { assignAccessToken } from './auth-utils/assign-access-token';
+import { doubleCsrf } from 'csrf-csrf';
 
 @Injectable()
 export class AuthService {
@@ -58,6 +59,21 @@ export class AuthService {
       req,
       jwtService: this.jwtService,
       configService: this.configService,
+    });
+  }
+
+  csrfMiddleware() {
+    const { generateToken, doubleCsrfProtection } = doubleCsrf({
+      getSecret: () => this.configService.get<string>('CSRF_SECRET'),
+      cookieName: 'csrf_token',
+      cookieOptions: {
+        httpOnly: false,
+        secure: true,
+        sameSite: 'none',
+        path: '/',
+      },
+      size: 64,
+      ignoredMethods: ['GET', 'HEAD', 'OPTIONS'],
     });
   }
 }
