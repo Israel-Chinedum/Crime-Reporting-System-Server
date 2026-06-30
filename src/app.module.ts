@@ -20,7 +20,7 @@ console.log('ENV URL', process.env.DATABASE_URL);
       type: 'postgres',
       url: process.env.DATABASE_URL,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
       ssl: { rejectUnauthorized: false },
     }),
 
