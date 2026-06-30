@@ -11,17 +11,6 @@ export class AuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { accessToken, access, role } =
-      await this.authService.assignAccessToken(req);
-
-    // ====== Send refresh token cookie ======
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      domain: '.onrender.com',
-    });
-
-    return { access, role };
+    return await this.authService.assignAccessToken(req);
   }
 }

@@ -23,26 +23,7 @@ export class UserController {
     @Body() body: signinUserDTO,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { accessToken, refreshToken, access, role } =
-      await this.userService.signinUser(body);
-
-    // ====== Send refresh token cookie ======
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      domain: '.onrender.com',
-    });
-
-    // ====== Send access token cookie ======
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      domain: '.onrender.com',
-    });
-
-    return { access, role };
+    return await this.userService.signinUser(body);
   }
 
   // ====== FORGOT PASSWORD ROUTE: To send otp for forgotten password ======
