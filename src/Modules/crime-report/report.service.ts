@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Report } from './report.entity';
+import { Report } from './crime-report-entities/report.entity';
 import { Repository } from 'typeorm';
 import { crimeReportDTO } from './crime-report-DTO/crime-report-dto';
 import { saveReport } from './crime-report-utils/save-report.util';
@@ -9,11 +9,14 @@ import { ConfigService } from '@nestjs/config';
 import { createClient } from '@supabase/supabase-js';
 import { saveEvidence } from './crime-report-utils/save-evidence.util';
 import { generateReportId } from 'src/Utilities/generate-report-id';
+import { Location } from './crime-report-entities/location.entity';
 
 @Injectable()
 export class ReportService {
   constructor(
     @InjectRepository(Report) private readonly reportRepo: Repository<Report>,
+    @InjectRepository(Location)
+    private readonly locationRepo: Repository<Location>,
     private readonly configService: ConfigService,
   ) {}
 
@@ -46,6 +49,7 @@ export class ReportService {
     await saveReport({
       report: body,
       reportRepo: this.reportRepo,
+      locationRepo: this.locationRepo,
       user,
       reportId,
     });

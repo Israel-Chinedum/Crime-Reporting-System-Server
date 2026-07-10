@@ -21,6 +21,16 @@ export class crimeReportDTO {
   @IsNotEmpty()
   @IsString()
   @Transform(({ value }) => value?.trim())
+  latitude!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Transform(({ value }) => value?.trim())
+  longitude!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Transform(({ value }) => value?.trim())
   description!: string;
 
   @IsNotEmpty()
@@ -41,6 +51,14 @@ export class crimeReportDTO {
   })
   @IsBoolean()
   evidence_provided!: boolean;
+
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return value;
+  })
+  @IsBoolean()
+  anonymous!: boolean;
 
   @IsNotEmpty()
   @IsString()

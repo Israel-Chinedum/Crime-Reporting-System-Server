@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Repository } from 'typeorm';
-import { Report } from '../report.entity';
+import { Report } from '../crime-report-entities/report.entity';
 
 export const saveEvidence = async ({
   file,
