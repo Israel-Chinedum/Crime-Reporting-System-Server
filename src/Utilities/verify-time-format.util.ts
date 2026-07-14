@@ -1,6 +1,6 @@
 class VerifyTimeFormat {
   isTimeFormat(value: string) {
-    const timeRegex = /^(0?[1-9]|1[0-2]):[0-5][0-9]\s(AM|PM)$/;
+    const timeRegex = /^([01]\d|2[0-3]):[0-5]\d\s(AM|PM)$/i;
     if (!timeRegex.test(value)) {
       return false;
     }

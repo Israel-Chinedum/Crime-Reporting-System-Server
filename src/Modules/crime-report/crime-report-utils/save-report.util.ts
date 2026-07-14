@@ -3,7 +3,6 @@ import { Report } from '../crime-report-entities/report.entity';
 import { crimeReportDTO } from '../crime-report-DTO/crime-report-dto';
 import { BadRequestException } from '@nestjs/common';
 import type { jwtPayload } from 'src/types/jwt-payload';
-import { verifyTimeFormat } from 'src/Utilities/verify-time-format.util';
 import { getLoacation } from './get-locatioin.util';
 import { Location } from '../crime-report-entities/location.entity';
 
@@ -20,14 +19,6 @@ export const saveReport = async ({
   reportId: string;
   locationRepo: Repository<Location>;
 }) => {
-  // ====== Convert time value to uppercase ======
-  report.time = report.time.toUpperCase();
-
-  const timeFormat = verifyTimeFormat.isTimeFormat(report.time);
-  if (!timeFormat) {
-    throw new BadRequestException('Time value is improper!');
-  }
-
   try {
     const { longitude, latitude, anonymous, ...filteredReport } = report;
 
@@ -41,6 +32,7 @@ export const saveReport = async ({
       reportId,
       actual_location: location,
       reported_by: !report.anonymous ? user.username : 'anonymous',
+      status: 'active',
       ...filteredReport,
     };
 

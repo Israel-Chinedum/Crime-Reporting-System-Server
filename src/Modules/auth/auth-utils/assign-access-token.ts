@@ -13,7 +13,7 @@ export const assignAccessToken = async ({
   jwtService: JwtService;
   configService: ConfigService;
 }) => {
-  const { refreshToken } = req.cookies;
+  const refreshToken = req.header('Authorization')?.split(' ')[1];
 
   if (!refreshToken) {
     throw new ForbiddenException('Token not found!');

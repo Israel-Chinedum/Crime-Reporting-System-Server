@@ -27,6 +27,7 @@ export class ReportController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     if (req.user) {
+      console.log('FILE: ', file);
       return await this.reportService.saveReport({
         body,
         user: req.user,

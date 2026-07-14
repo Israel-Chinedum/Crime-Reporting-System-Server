@@ -18,10 +18,10 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
 
-    const { accessToken } = req.cookies;
+    const accessToken = req.header('Authorization').split(' ')[1];
 
     if (!accessToken) {
-      throw new UnauthorizedException('Token not found!');
+      throw new ForbiddenException('Token not found!');
     }
 
     try {

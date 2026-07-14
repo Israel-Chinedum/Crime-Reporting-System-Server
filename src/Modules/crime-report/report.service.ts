@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Report } from './crime-report-entities/report.entity';
 import { Repository } from 'typeorm';
@@ -10,6 +10,7 @@ import { createClient } from '@supabase/supabase-js';
 import { saveEvidence } from './crime-report-utils/save-evidence.util';
 import { generateReportId } from 'src/Utilities/generate-report-id';
 import { Location } from './crime-report-entities/location.entity';
+import { verifyTimeFormat } from 'src/Utilities/verify-time-format.util';
 
 @Injectable()
 export class ReportService {
@@ -30,6 +31,16 @@ export class ReportService {
     user: jwtPayload;
     file: Express.Multer.File;
   }) {
+    // ====== Convert time value to uppercase ======
+    body.time = body.time.toUpperCase();
+    console.log(body.time);
+
+    const timeFormat = verifyTimeFormat.isTimeFormat(body.time);
+    if (!timeFormat) {
+      throw new BadRequestException('Time value is improper!');
+    }
+
+    console.log('Testing');
     // ====== Get report id ======
     let reportCount: number = await this.reportRepo.count();
     const reportId = generateReportId(reportCount);
@@ -54,7 +65,7 @@ export class ReportService {
       reportId,
     });
 
-    return { message: 'Report saved!' };
+    return { message: reportId };
   }
 
   // ====== GET REPORT METHOD ======

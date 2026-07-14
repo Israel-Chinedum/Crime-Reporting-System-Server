@@ -18,12 +18,10 @@ export class crimeReportDTO {
   @Transform(({ value }) => value?.trim())
   location!: string;
 
-  @IsNotEmpty()
   @IsString()
   @Transform(({ value }) => value?.trim())
   latitude!: string;
 
-  @IsNotEmpty()
   @IsString()
   @Transform(({ value }) => value?.trim())
   longitude!: string;
@@ -64,9 +62,4 @@ export class crimeReportDTO {
   @IsString()
   @IsIn(['normal', 'emergency'])
   type!: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @IsIn(['active', 'resolved'])
-  status!: string;
 }
