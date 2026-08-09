@@ -20,7 +20,7 @@ export const emitNewReport = async ({
   const filteredNewReports: any = [];
 
   if (!newReports.length) {
-    callback && callback([]);
+    if (callback) return [];
     return;
   }
 
@@ -40,8 +40,7 @@ export const emitNewReport = async ({
 
   if (!callback) {
     server.emit('notification', filteredNewReports);
-    return;
+  } else {
+    return filteredNewReports;
   }
-
-  callback(filteredNewReports);
 };

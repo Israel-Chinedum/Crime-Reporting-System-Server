@@ -129,6 +129,7 @@ export class ChatGateway implements OnGatewayConnection {
     return await emitNewReport({
       reportRepo: this.reportRepo,
       server: this.server,
+      callback: true,
     });
   }
 }
