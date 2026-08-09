@@ -28,7 +28,9 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/jwt": "^11.0.2",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/platform-socket.io": "^11.1.28",
     "@nestjs/typeorm": "^11.0.1",
+    "@nestjs/websockets": "^11.1.28",
     "@supabase/supabase-js": "^2.108.2",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
@@ -41,6 +43,7 @@
     "redis": "^6.0.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "socket.io": "^4.8.3",
     "typeorm": "^1.0.0"
   },
   "devDependencies": {

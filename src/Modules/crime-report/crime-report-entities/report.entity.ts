@@ -35,6 +35,9 @@ export class Report {
   @Column()
   evidence_provided!: boolean;
 
+  @Column({ type: 'jsonb', nullable: true })
+  fileMetaData!: { name: string; mimetype: string } | null;
+
   @Column()
   reported_by!: string;
 

@@ -20,6 +20,4 @@ export const saveEvidence = async ({
     console.log('ERROR: ', error);
     throw new BadRequestException('Unable to save report!');
   }
-
-  return reportId;
 };

@@ -19,11 +19,23 @@ export class crimeReportDTO {
   location!: string;
 
   @IsString()
-  @Transform(({ value }) => value?.trim())
+  @Transform(({ value }) => {
+    if (typeof value === 'number') {
+      return String(value);
+    } else if (typeof value === 'string') {
+      return value?.trim();
+    }
+  })
   latitude!: string;
 
   @IsString()
-  @Transform(({ value }) => value?.trim())
+  @Transform(({ value }) => {
+    if (typeof value === 'number') {
+      return String(value);
+    } else if (typeof value === 'string') {
+      return value?.trim();
+    }
+  })
   longitude!: string;
 
   @IsNotEmpty()

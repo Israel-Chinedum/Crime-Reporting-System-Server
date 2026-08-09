@@ -44,6 +44,7 @@ export class ReportService {
     // ====== Get report id ======
     let reportCount: number = await this.reportRepo.count();
     const reportId = generateReportId(reportCount);
+    let fileMetaData: any = null;
 
     // ====== Make sure evidence provided is initially set to false ======
     body.evidence_provided = false;
@@ -54,6 +55,7 @@ export class ReportService {
         this.configService.get<string>('SUPABASE_SERVICE_ROLE_KEY')!,
       );
       await saveEvidence({ file, supabase, reportId });
+      fileMetaData = { name: file.originalname, mimetype: file.mimetype };
       body.evidence_provided = true;
     }
 
@@ -63,6 +65,7 @@ export class ReportService {
       locationRepo: this.locationRepo,
       user,
       reportId,
+      fileMetaData,
     });
 
     return { message: reportId };

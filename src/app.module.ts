@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ReportModule } from './Modules/crime-report/report.module';
 import { AuthModule } from './Modules/auth/auth.module';
 import { AlertModule } from './Modules/alert/alert.module';
+import { ChatModule } from './Modules/chat/chat.module';
 
 console.log('ENV URL', process.env.DATABASE_URL);
 
@@ -20,7 +21,7 @@ console.log('ENV URL', process.env.DATABASE_URL);
       type: 'postgres',
       url: process.env.DATABASE_URL,
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
       ssl: { rejectUnauthorized: false },
     }),
 
@@ -29,6 +30,7 @@ console.log('ENV URL', process.env.DATABASE_URL);
     ReportModule,
     AuthModule,
     AlertModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

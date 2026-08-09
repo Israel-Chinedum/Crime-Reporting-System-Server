@@ -12,12 +12,14 @@ export const saveReport = async ({
   user,
   reportId,
   locationRepo,
+  fileMetaData,
 }: {
   report: crimeReportDTO;
   reportRepo: Repository<Report>;
   user: jwtPayload;
   reportId: string;
   locationRepo: Repository<Location>;
+  fileMetaData: any;
 }) => {
   try {
     const { longitude, latitude, anonymous, ...filteredReport } = report;
@@ -33,6 +35,7 @@ export const saveReport = async ({
       actual_location: location,
       reported_by: !report.anonymous ? user.username : 'anonymous',
       status: 'active',
+      fileMetaData,
       ...filteredReport,
     };
 
