@@ -3,7 +3,7 @@ import { Report } from '../crime-report-entities/report.entity';
 import { crimeReportDTO } from '../crime-report-DTO/crime-report-dto';
 import { BadRequestException } from '@nestjs/common';
 import type { jwtPayload } from 'src/types/jwt-payload';
-import { getLoacation } from './get-locatioin.util';
+import { getLoacation } from './get-location.util';
 import { Location } from '../crime-report-entities/location.entity';
 
 export const saveReport = async ({
