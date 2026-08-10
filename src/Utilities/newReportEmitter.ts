@@ -35,6 +35,7 @@ export const emitNewReport = async ({
           : report?.actual_location,
       time: report?.time,
       date: report?.date,
+      createdAt: report?.createdAt,
     });
   }
 

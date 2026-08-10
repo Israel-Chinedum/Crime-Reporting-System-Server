@@ -6,7 +6,7 @@ export const relayAlert = async ({ reportId, reportRepo, server }) => {
     const report = await reportRepo.findOne({ where: { reportId } });
     server.to('admin_user').emit('report-notification', report);
 
-    emitNewReport({ reportRepo, server });
+    await emitNewReport({ reportRepo, server });
   } catch (error) {
     console.log('ERROR:', error);
   }

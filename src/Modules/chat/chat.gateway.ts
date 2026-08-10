@@ -126,10 +126,15 @@ export class ChatGateway implements OnGatewayConnection {
   // ====== Emit New Report ======
   @SubscribeMessage('notification')
   async sendNewReportNotification() {
-    return await emitNewReport({
-      reportRepo: this.reportRepo,
-      server: this.server,
-      callback: true,
-    });
+    try {
+      return await emitNewReport({
+        reportRepo: this.reportRepo,
+        server: this.server,
+        callback: true,
+      });
+    } catch (error) {
+      console.log('ERROR:', error);
+      return { error: 'Unable to get notifications!' };
+    }
   }
 }
