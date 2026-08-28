@@ -24,7 +24,7 @@ export const sendMail = async ({
     await transporter.sendMail({
       from: 'mytechstudio081@gmail.com',
       to: email,
-      subject: 'FORGOT PASSWORD',
+      subject: 'FPOG CRIME REPORTING SYSTEM',
       text: `Your OTP is: ${otp}`,
     });
 

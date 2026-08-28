@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   Req,
+  UnauthorizedException,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -12,7 +14,6 @@ import { crimeReportDTO } from './crime-report-DTO/crime-report-dto';
 import type { Request } from 'express';
 import { AuthGuard } from '../auth/authGuard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Multer } from 'multer';
 
 @Controller('report')
 @UseGuards(AuthGuard)
@@ -33,6 +34,14 @@ export class ReportController {
         user: req.user,
         file,
       });
+    }
+    throw new UnauthorizedException('Unauthorized user access!');
+  }
+
+  @Get()
+  async getUserReports(@Req() req: Request) {
+    if (req.user) {
+      return await this.reportService.getUserReports({ user: req.user });
     }
   }
 

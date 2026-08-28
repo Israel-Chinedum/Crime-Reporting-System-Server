@@ -72,5 +72,15 @@ export class ReportService {
   }
 
   // ====== GET REPORT METHOD ======
-  async getReports({}) {}
+  async getUserReports({ user }: { user: jwtPayload }) {
+    try {
+      const userReports = await this.reportRepo.find({
+        where: { reported_by: user.username },
+      });
+      return userReports;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException('Unable to get user reports!');
+    }
+  }
 }

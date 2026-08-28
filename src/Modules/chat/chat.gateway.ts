@@ -20,6 +20,8 @@ import { sendEvidence } from './chat-gateway-utils/sendEvidence.util';
 import { relayAlert } from './chat-gateway-utils/relayAlert.util';
 import { sendAlerts } from './chat-gateway-utils/sendAlerts.util';
 import { emitNewReport } from 'src/Utilities/newReportEmitter';
+import { SecurityTip } from 'src/Entities/saveTip.entity';
+import { saveTip } from './chat-gateway-utils/saveTip.util';
 
 @WebSocketGateway({
   cors: {
@@ -34,6 +36,8 @@ export class ChatGateway implements OnGatewayConnection {
   constructor(
     @InjectRepository(Report)
     private readonly reportRepo: Repository<Report>,
+    @InjectRepository(SecurityTip)
+    private readonly securityTipRepo: Repository<SecurityTip>,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
@@ -136,5 +140,53 @@ export class ChatGateway implements OnGatewayConnection {
       console.log('ERROR:', error);
       return { error: 'Unable to get notifications!' };
     }
+  }
+
+  // ====== SAVE SAFETY/SECURITY TIP ======
+  @SubscribeMessage('save-tip')
+  async saveTip(@MessageBody() payload: any) {
+    return await saveTip({
+      securityTipRepo: this.securityTipRepo,
+      payload,
+    });
+  }
+
+  // ====== GET SAFETY/SECURITY TIPS ======
+  @SubscribeMessage('get-tips')
+  async sendTips() {
+    try {
+      return await this.securityTipRepo.find();
+    } catch (error) {
+      console.log(error);
+      return { error: 'Unable to get security tips!' };
+    }
+  }
+
+  // ====== UPDATE SAFETY/SECURITY TIP ======
+  @SubscribeMessage('update-tip')
+  async updateTip(
+    @MessageBody()
+    payload: {
+      newTitle: string;
+      title: string;
+      message: string;
+    },
+  ) {
+    if (payload.newTitle !== payload.title) {
+      const titleExists = await this.securityTipRepo.findOne({
+        where: { title: payload.newTitle },
+      });
+      if (titleExists) {
+        return { error: 'A tip with this title already exists!' };
+      }
+    }
+    await this.securityTipRepo.update(
+      { title: payload.title },
+      { title: payload.newTitle, message: payload.message },
+    );
+    return {
+      message: 'Tip has been updated successfully',
+      tips: await this.securityTipRepo.find(),
+    };
   }
 }

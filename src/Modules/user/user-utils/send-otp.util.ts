@@ -5,7 +5,7 @@ import { generateOTP } from 'src/Utilities/generate-OTP.util';
 import { sendMail } from 'src/Utilities/sendEmail.util';
 import { RedisClientType } from 'redis';
 
-export const forgotPassword = async ({
+export const sendOTP = async ({
   userRepo,
   payload,
   redis,

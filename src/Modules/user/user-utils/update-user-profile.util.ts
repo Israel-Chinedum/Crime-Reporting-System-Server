@@ -19,6 +19,7 @@ export const updateUserProfile = async ({
   });
 
   if (!user) {
+    console.log('Happened...');
     throw new UnauthorizedException('Unauthorized user access!');
   }
 

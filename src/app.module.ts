@@ -8,6 +8,8 @@ import { ReportModule } from './Modules/crime-report/report.module';
 import { AuthModule } from './Modules/auth/auth.module';
 import { AlertModule } from './Modules/alert/alert.module';
 import { ChatModule } from './Modules/chat/chat.module';
+import { Multer } from 'multer';
+import { AdminModule } from './Modules/admin/admin.module';
 
 console.log('ENV URL', process.env.DATABASE_URL);
 
@@ -27,6 +29,7 @@ console.log('ENV URL', process.env.DATABASE_URL);
 
     // ====== FEATURES/MODULES ======
     UserModule,
+    AdminModule,
     ReportModule,
     AuthModule,
     AlertModule,
