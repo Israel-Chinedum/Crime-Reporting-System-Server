@@ -7,17 +7,24 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { jwtPayload } from 'src/types/jwt-payload';
+import { generateToken } from 'src/Modules/auth/auth-utils/generate-token.util';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 export const updateAdminUsername = async ({
   username,
   password,
   adminRepo,
   user,
+  configService,
+  jwtService,
 }: {
   username: string;
   password: string;
   adminRepo: Repository<Admin>;
   user: jwtPayload;
+  configService: ConfigService;
+  jwtService: JwtService;
 }) => {
   const admin = await adminRepo.findOne({ where: { username: user.username } });
 
@@ -33,7 +40,17 @@ export const updateAdminUsername = async ({
 
   try {
     await adminRepo.update({ username: user.username }, { username });
-    return { message: 'Username has been updated successfully' };
+    const accessToken = await generateToken({
+      user: { username, userId: admin.id, role: 'admin' },
+      type: 'access',
+      configService,
+      jwtService,
+    });
+    return {
+      message: 'Username has been updated successfully',
+      data: username,
+      accessToken,
+    };
   } catch (error) {
     console.log(error);
     throw new InternalServerErrorException('An error occured!');

@@ -63,25 +63,19 @@ export class UserController {
     @UploadedFile() file: Express.Multer.File,
     @Req() req: Request,
   ) {
-    return (
-      req.user &&
-      (await this.userService.updateUserProfileImg({
-        file,
-        username: req.user?.username,
-      }))
-    );
+    return await this.userService.updateUserProfileImg({
+      file,
+      username: req.user?.username!,
+    });
   }
 
   // ====== GET USER PROFILE PICTURE ======
   @Get('/get-user-profile-pic')
   @UseGuards(AuthGuard)
   async getUserProfilePic(@Req() req: Request) {
-    return (
-      req.user &&
-      (await this.userService.getUserProfilePic({
-        username: req.user.username,
-      }))
-    );
+    return await this.userService.getUserProfilePic({
+      username: req.user?.username!,
+    });
   }
 
   // ====== GET USER PROFILE ======

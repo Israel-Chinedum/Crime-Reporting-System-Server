@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from './admin.entity';
 import { Repository } from 'typeorm';
@@ -38,7 +38,22 @@ export class AdminService {
       password: payload.password,
       user: payload.user,
       adminRepo: this.adminRepo,
+      configService: this.configService,
+      jwtService: this.jwtService,
     });
+  }
+
+  // ====== GET ADMIN DATA ======
+  async getAdminData(user: jwtPayload) {
+    const admin = await this.adminRepo.findOne({
+      where: { username: user?.username },
+    });
+
+    if (!admin) {
+      throw new NotFoundException('Admin not found!');
+    }
+
+    return { username: admin.username };
   }
 
   // ===== SIGN IN ADMIN ======

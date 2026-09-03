@@ -1,6 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { adminSigninDTO } from './adminDTO/admin-signin.dto';
+import { UpdateAdminPasswordDTO } from './adminDTO/update-admin-password.dto';
+import { type Request } from 'express';
+import { UpdateAdminUsernameDTO } from './adminDTO/update-admin-username.dto';
+import { AuthGuard } from '../auth/authGuard';
 
 @Controller('admin')
 export class AdminController {
@@ -11,6 +15,37 @@ export class AdminController {
     const { refreshToken, accessToken } =
       await this.adminService.adminSignin(payload);
 
-    return { refreshToken, accessToken, access: 'granted' };
+    return { refreshToken, accessToken, access: 'granted', role: 'admin' };
+  }
+
+  @Post('/update-password')
+  @UseGuards(AuthGuard)
+  async updatePassword(
+    @Body() payload: UpdateAdminPasswordDTO,
+    @Req() req: Request,
+  ) {
+    return await this.adminService.updatePassword({
+      ...payload,
+      user: req.user!,
+    });
+  }
+
+  @Post('/update-username')
+  @UseGuards(AuthGuard)
+  async updateUsername(
+    @Body() payload: UpdateAdminUsernameDTO,
+    @Req() req: Request,
+  ) {
+    return await this.adminService.updateUsername({
+      ...payload,
+      user: req.user!,
+    });
+  }
+
+  @Get('/get-admin-data')
+  @UseGuards(AuthGuard)
+  async getAdminData(@Req() req: Request) {
+    console.log('USER: ', req.user);
+    return await this.adminService.getAdminData(req.user!);
   }
 }

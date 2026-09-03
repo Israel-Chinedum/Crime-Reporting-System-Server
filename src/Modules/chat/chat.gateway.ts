@@ -6,6 +6,7 @@ import {
   ConnectedSocket,
   OnGatewayConnection,
   WebSocketServer,
+  WsException,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { Repository } from 'typeorm';
@@ -54,9 +55,13 @@ export class ChatGateway implements OnGatewayConnection {
       });
       client.data.user = payload;
       client.join(payload.username);
-    } catch {
-      console.log('wrong');
+    } catch (error) {
+      console.log(error);
       client.disconnect();
+      // setTimeout(() => {
+      //   client.disconnect();
+      // }, 100);
+      // throw new WsException('Unauthorized user access!');
     }
   }
 
