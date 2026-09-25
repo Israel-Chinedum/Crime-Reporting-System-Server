@@ -1,10 +1,17 @@
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class updateUserPasswordDTO {
-  @IsNotEmpty()
   @IsString()
   @Transform(({ value }) => value?.trim())
+  @IsEmail()
+  @IsNotEmpty()
   email!: string;
 
   @IsNotEmpty()

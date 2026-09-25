@@ -5,6 +5,7 @@ import { UpdateAdminPasswordDTO } from './adminDTO/update-admin-password.dto';
 import { type Request } from 'express';
 import { UpdateAdminUsernameDTO } from './adminDTO/update-admin-username.dto';
 import { AuthGuard } from '../auth/authGuard';
+import { WeeklyReportsDTO } from './adminDTO/weekly-reports.dto';
 
 @Controller('admin')
 export class AdminController {
@@ -40,6 +41,12 @@ export class AdminController {
       ...payload,
       user: req.user!,
     });
+  }
+
+  @Post('/weekly-reports')
+  @UseGuards(AuthGuard)
+  async getWeeklyReports(@Body() payload: WeeklyReportsDTO) {
+    return await this.adminService.weeklyReports(payload);
   }
 
   @Get('/get-admin-data')

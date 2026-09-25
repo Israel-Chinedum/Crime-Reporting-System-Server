@@ -4,9 +4,10 @@ import { Admin } from './admin.entity';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { JwtModule } from '@nestjs/jwt';
+import { Report } from '../crime-report/crime-report-entities/report.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Admin]), JwtModule],
+  imports: [TypeOrmModule.forFeature([Admin, Report]), JwtModule],
   controllers: [AdminController],
   providers: [AdminService],
 })

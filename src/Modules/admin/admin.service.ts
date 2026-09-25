@@ -1,7 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from './admin.entity';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { jwtPayload } from 'src/types/jwt-payload';
 import { updateAdminPassword } from './admin-utils/update-admin-password.util';
 import { updateAdminUsername } from './admin-utils/update-admin-username.util';
@@ -9,11 +13,13 @@ import { adminSignin } from './admin-utils/admin-signin.util';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { adminSigninDTO } from './adminDTO/admin-signin.dto';
+import { Report } from '../crime-report/crime-report-entities/report.entity';
 
 @Injectable()
 export class AdminService {
   constructor(
     @InjectRepository(Admin) private readonly adminRepo: Repository<Admin>,
+    @InjectRepository(Report) private readonly reportRepo: Repository<Report>,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
   ) {}
@@ -65,5 +71,29 @@ export class AdminService {
       jwtService: this.jwtService,
       configService: this.configService,
     });
+  }
+
+  // ====== NUMBER OF REPORTS ON EACH DAY OF THE CURRENT WEEK ======
+  async weeklyReports({
+    startOfWeek,
+    endOfWeek,
+  }: {
+    startOfWeek: Date;
+    endOfWeek: Date;
+  }) {
+    const startTimestamp = startOfWeek;
+    const endTimestamp = endOfWeek;
+
+    try {
+      const weeklyReports = await this.reportRepo.find({
+        select: { createdAt: true },
+        where: { createdAt: Between(startTimestamp, endTimestamp) },
+      });
+
+      return weeklyReports;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('An error occured!');
+    }
   }
 }
