@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Report } from './crime-report-entities/report.entity';
 import { Repository } from 'typeorm';
@@ -11,6 +15,7 @@ import { saveEvidence } from './crime-report-utils/save-evidence.util';
 import { generateReportId } from 'src/Utilities/generate-report-id';
 import { Location } from './crime-report-entities/location.entity';
 import { verifyTimeFormat } from 'src/Utilities/verify-time-format.util';
+import { getSecurityLocation } from './crime-report-utils/get-security-location.util';
 
 @Injectable()
 export class ReportService {
@@ -81,6 +86,22 @@ export class ReportService {
     } catch (error) {
       console.log(error);
       throw new BadRequestException('Unable to get user reports!');
+    }
+  }
+
+  // ====== GET SECURITY LOCATION METHOD ======
+  async getSecurityLocations(payload: { lat: string; lng: string }) {
+    try {
+      return await getSecurityLocation({
+        locationRepo: this.locationRepo,
+        lat: payload.lat,
+        lng: payload.lng,
+      });
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(
+        'An error occured please try again later!',
+      );
     }
   }
 }
