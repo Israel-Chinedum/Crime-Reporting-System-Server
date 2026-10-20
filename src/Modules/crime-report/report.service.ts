@@ -16,6 +16,7 @@ import { generateReportId } from 'src/Utilities/generate-report-id';
 import { Location } from './crime-report-entities/location.entity';
 import { verifyTimeFormat } from 'src/Utilities/verify-time-format.util';
 import { getSecurityLocation } from './crime-report-utils/get-security-location.util';
+import { getLoacation } from './crime-report-utils/get-location.util';
 
 @Injectable()
 export class ReportService {
@@ -89,14 +90,39 @@ export class ReportService {
     }
   }
 
+  // ====== GET USER LOCATION METHOD ======
+  async getUserLocation(payload: { lat: string; lng: string }) {
+    try {
+      const { location } = await getLoacation({
+        lat: payload.lat,
+        lng: payload.lng,
+        locationRepo: this.locationRepo,
+      });
+      return location;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(
+        'An error occured please try again later!',
+      );
+    }
+  }
+
   // ====== GET SECURITY LOCATION METHOD ======
   async getSecurityLocations(payload: { lat: string; lng: string }) {
     try {
-      return await getSecurityLocation({
+      const security_locations = await getSecurityLocation({
         locationRepo: this.locationRepo,
         lat: payload.lat,
         lng: payload.lng,
       });
+
+      const { location } = await getLoacation({
+        lat: payload.lat,
+        lng: payload.lng,
+        locationRepo: this.locationRepo,
+      });
+
+      return { user_location: location, security_locations };
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(

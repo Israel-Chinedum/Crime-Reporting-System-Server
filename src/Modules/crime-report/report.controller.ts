@@ -50,10 +50,8 @@ export class ReportController {
     return await this.reportService.getSecurityLocations(payload);
   }
 
-  // @Post('/evidence')
-  // @UseInterceptors(FileInterceptor('file'))
-  // async saveEvidence(@UploadedFile() file: Express.Multer.File) {
-  //   console.log(file);
-  //   return { message: 'File has been received!' };
-  // }
+  @Post('/get-location')
+  async sendUserLocation(@Body() payload: { lat: string; lng: string }) {
+    return await this.reportService.getUserLocation(payload);
+  }
 }
